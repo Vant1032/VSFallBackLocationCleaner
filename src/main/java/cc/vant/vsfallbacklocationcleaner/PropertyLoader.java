@@ -15,8 +15,9 @@ public class PropertyLoader {
     private File propsFile;
     private Map<String, String> props = new HashMap<>();
 
-    public PropertyLoader(File propsFile) {
+    public PropertyLoader(File propsFile) throws FileNotFoundException {
         this.propsFile = propsFile;
+        parse();
     }
 
     /**

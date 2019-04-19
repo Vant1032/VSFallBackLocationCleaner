@@ -19,11 +19,13 @@
 
 所以这个项目关键就是通过如下字符串来判断项目是否存在，如果不存在，即删除此文件夹。
 
-思路：获取表中所有字符串，获取最开头到第一个分号（如果有）之间的字符串，判断是否是一个文件路径，如果是，则将所有文件路径保存到List中，然后再判断这些文件路径代表的文件是否都存在，如果都不存在，那么代表这个缓存目录可以删除了。
+思路（查看代码更清楚）：
+其一可以：
 
-配置：项目采用init.props作为配置文件，采用key=value的格式。
+获取表中所有字符串，获取最开头到第一个分号（如果有）之间的字符串，判断是否是一个文件路径，如果是，则将所有文件路径保存到List中，然后再判断这些文件路径代表的文件是否都存在，如果都不存在，那么代表这个缓存目录可以删除了。
 
-FallBackLocation指定缓存根目录（即回退位置）
+
+其它的见代码
 
 
 
@@ -32,6 +34,15 @@ FallBackLocation指定缓存根目录（即回退位置）
 鉴于判断项目是否存在的算法也许不一定准确，特别提供手动模式供自己手动删除。
 
 手动模式提供扫描缓存目录每个目录的projects路径信息，用于手动判断项目存在，并将这些信息写入到ManualMode.txt文件里面（json格式）
+
+# 配置（Configuration）
+在jar目录文件所在目录下新建一个init.props文件
+
+FallBackLocation=C:\path\to\location（default C:\VSTemp\） 指定缓存根目录（即回退位置）
+
+ManualMode=true|false （default false）  用于开关手动模式
+
+
 
 
 # 什么是回退位置（What is fall back location）
@@ -50,8 +61,16 @@ FallBackLocation指定缓存根目录（即回退位置）
 
 3. 本项目采用Intellij IDEA开发，用Gradle作为构建工具,JDK版本11
 
-4. 项目采用sqlite-jdbc来读取sqlite数据库。
+4. 项目采用sqlite-jdbc来读取sqlite数据库，Gson导出数据。
+
+5. 代码很少，文档比较全，可以看看代码就明白了
 
 
 # 项目代码结构
+
+cc.vant.vsfallbacklocationcleaner目录下：
+
+PropertyLoader读取配置文件
+
+Runner 主要代码以及运行主类
 
