@@ -24,14 +24,15 @@ public class PropertyLoader {
      * @throws FileNotFoundException 未找到属性文件
      */
     private void parse() throws FileNotFoundException {
-        Scanner in = new Scanner(propsFile);
-        while (in.hasNextLine()) {
-            String line = in.nextLine();
-            if (line.isEmpty() || line.isBlank()) {
-                return;
+        try (Scanner in = new Scanner(propsFile)) {
+            while (in.hasNextLine()) {
+                String line = in.nextLine();
+                if (line.isEmpty() || line.isBlank()) {
+                    return;
+                }
+                String[] split = line.split("=");
+                props.put(split[0], split[1]);
             }
-            String[] split = line.split("=");
-            props.put(split[0], split[1]);
         }
     }
 

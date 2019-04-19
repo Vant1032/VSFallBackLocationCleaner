@@ -6,9 +6,12 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -24,6 +27,7 @@ import java.util.regex.Pattern;
 
 /**
  * 作为主要的运行类
+ *
  * @author Vant
  * @since 2019/4/19 上午 9:38
  */
@@ -127,7 +131,21 @@ public class Runner {
 
         toRemove.forEach(s1 -> {
             try {
-                Files.delete(Path.of(s1));
+                Files.walkFileTree(Path.of(fallBackLocation, s1), new SimpleFileVisitor<>() {
+
+                    @Override
+                    public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                        Files.delete(dir);
+
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        Files.delete(file);
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
             } catch (IOException e) {
                 System.err.println("删除 " + s1 + " 失败");
                 e.printStackTrace();
@@ -166,15 +184,15 @@ public class Runner {
 
             Path path = Paths.get(dir.getAbsolutePath(), "Browse.VC.db");
 
-            try {
-                Connection connection = DriverManager.getConnection("jdbc:sqlite:" + path.toAbsolutePath());
-                Statement statement = connection.createStatement();
-                ResultSet names = statement.executeQuery("select name from projects");
+            try (
+                    Connection connection = DriverManager.getConnection("jdbc:sqlite:" + path.toAbsolutePath());
+                    Statement statement = connection.createStatement();
+                    ResultSet names = statement.executeQuery("select name from projects");
+            ) {
                 while (names.next()) {
                     String name = names.getString("name");
                     namesList.add(name);
                 }
-
             } catch (SQLException e) {
                 System.err.println("打开SQLite数据库失败  " + path.toAbsolutePath());
                 e.printStackTrace();
