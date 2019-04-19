@@ -50,6 +50,8 @@ FallBackLocation指定缓存根目录（即回退位置）
 
 3. 本项目采用Intellij IDEA开发，用Gradle作为构建工具,JDK版本11
 
+4. 项目采用sqlite-jdbc来读取sqlite数据库。
+
 
 # 项目代码结构
 

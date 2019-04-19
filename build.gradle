@@ -1,11 +1,18 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'cc.vant'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 11
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'cc.vant.vsfallbacklocationcleaner.Runner'
+    }
+}
 
 repositories {
     mavenCentral()
