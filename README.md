@@ -2,6 +2,14 @@
 
 本项目用于在VS使用了回退位置作为项目的临时缓存路径时用于清理无效（项目已经删除但是缓存仍然存在）缓存。
 
+
+# 运行
+
+```bash
+java -jar VSFallBackLocationCleaner-1.0.jar
+```
+
+
 # 原理（Principle）
 
 当指定好了回退位置（FallBack location），假设为C://VSTemp，则每次打开一个新的项目，都会在这个文件夹先产生一个类似BROWSE.VC-df664a8e的文件夹，里面
